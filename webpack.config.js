@@ -44,7 +44,9 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.scss', '.css'],
     alias: {
       'components': path.join(__dirname, 'src/components'),
-      'data': path.join(__dirname, 'src/data')
+      'services': path.join(__dirname, 'src/services'),
+      'data': path.join(__dirname, 'src/data'),
+
     }
   },
   plugins: [

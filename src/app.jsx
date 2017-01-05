@@ -1,19 +1,29 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
+import {chain, min, first, concat} from 'lodash';
 
-import FileReader from './components/FileReader';
 
-const fileAPIEnabled = !!(
-  window.File && window.FileReader && window.FileList && window.Blob
-);
+import {supportFileApi} from 'services/file';
+import FileReader from 'components/FileReader';
 
 const App = () => {
   return (
-    <div className={'page'}>
-      <h1>Welcome</h1>
+    <div className={'container'}>
+      <h1>ML Clustering</h1>
       {
-        fileAPIEnabled && (
-          <FileReader />
+        supportFileApi() && (
+          <FileReader onData={(data) => {
+            console.log(data);
+            var minX = chain(data)
+              .reduce((list, point) => concat(list, first(point)), [])
+              .min()
+              .value();
+
+            var minY = chain(data)
+              .reduce((list, point) => concat(list, point[1]), [])
+              .min()
+              .value();
+          }}/>
         )
       }
     </div>
