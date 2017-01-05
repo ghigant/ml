@@ -1,6 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
+
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const isProduction = process.env.NODE_ENV === 'production' ? true : false;
+
+console.log('isProduction', isProduction);
+
+let productionPlugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }),
+  new webpack.optimize.UglifyJsPlugin()
+];
 
 module.exports = {
   context: path.join(__dirname, 'src'),
@@ -10,7 +23,6 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    // chunkname: '[name].js',
     path: path.join(__dirname, 'build/assets'),
     publicPath: '/build/'
   },
@@ -40,8 +52,8 @@ module.exports = {
       names: ['vendor'],
       minChunks: Infinity
     }),
-    new webpack.HotModuleReplacementPlugin()
-  ],
+    new webpack.HotModuleReplacementPlugin(),
+  ].concat(isProduction ? productionPlugins : []),
   devServer: {
     hot: false,
     inline: true,
