@@ -1,11 +1,15 @@
 {
-  "name": "eit",
+  "name": "ml",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
+  "homepage": "https://ghigant.github.io/ml",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "build": "webpack -p && cp index.html build/index.html",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +20,7 @@
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.25.0",
     "d3": "^4.4.0",
+    "gh-pages": "^0.12.0",
     "lodash": "^4.16.6",
     "node-sass": "^3.10.1",
     "object-hash": "^1.1.5",

@@ -11,8 +11,8 @@ module.exports = {
   output: {
     filename: '[name].js',
     // chunkname: '[name].js',
-    path: path.join(__dirname, 'assets'),
-    publicPath: '/assets/'
+    path: path.join(__dirname, 'build/assets'),
+    publicPath: '/build/'
   },
   module: {
     loaders: [{
