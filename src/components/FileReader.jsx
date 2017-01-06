@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {read as readFile} from '../services/file';
 import {first} from 'lodash';
 
+import FileButton from 'components/FileButton/FileButton';
+
 class FileImport extends Component {
 
   handleOnChange(event) {
@@ -14,9 +16,12 @@ class FileImport extends Component {
 
   render() {
     return (
+      <div>
+      <FileButton />
       <input
         type="file"
         onChange={e => this.handleOnChange(e)} />
+      </div>
     );
   }
 }
