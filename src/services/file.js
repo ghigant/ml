@@ -5,6 +5,7 @@ const supportFileApi = () => (
 );
 
 const parse = (content) => {
+  // split data by new line and clean epmty 
   const lines = content.split(/[\r\n]+/g).filter((line) => line.trim().length !== 0);
   return lines.map((line) => {
     return concat(...line.split(' ')).map(item => parseFloat(item, 10));

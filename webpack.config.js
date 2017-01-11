@@ -46,6 +46,7 @@ module.exports = {
       'containers': path.join(__dirname, 'src/containers'),
       'components': path.join(__dirname, 'src/components'),
       'services': path.join(__dirname, 'src/services'),
+      'state': path.join(__dirname, 'src/redux'),
       'data': path.join(__dirname, 'src/data'),
 
     }
@@ -57,6 +58,7 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
   ].concat(isProduction ? productionPlugins : []),
+  // devtool: '#cheap-eval-source-map',
   devServer: {
     hot: false,
     inline: true,

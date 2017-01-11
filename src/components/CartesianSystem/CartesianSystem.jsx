@@ -22,23 +22,20 @@ class CartesianSystem extends Component {
     super(props);
     const {width, height} = props;
     this.state = {
-      xScale: scaleLinear([0, 10], [SYSTEM_PADDING, width - SYSTEM_PADDING]),
-      yScale: scaleLinear([10, 0], [SYSTEM_PADDING, height - SYSTEM_PADDING]),
-      dataset: [],
       mousePosition: null
     };
   }
 
   getXAxis() {
-    return d3.axisBottom(this.state.xScale).ticks(TICKS);
+    return d3.axisBottom(this.props.xScale).ticks(TICKS);
   }
 
   getYAxis() {
-    return d3.axisLeft(this.state.yScale).ticks(TICKS);
+    return d3.axisLeft(this.props.yScale).ticks(TICKS);
   }
 
   getEventPosition(event) {
-    const {xScale, yScale} = this.state;
+    const {xScale, yScale} = this.props;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = xScale.invert(event.clientX - rect.left);
     const y = yScale.invert(event.clientY - rect.top);
@@ -48,7 +45,7 @@ class CartesianSystem extends Component {
 
   isInDomain(event) {
     const {x, y} = this.getEventPosition(event);
-    const {xScale, yScale} = this.state;
+    const {xScale, yScale} = this.props;
     return inRange(x, ...xScale.domain()) && inRange(y, ...yScale.domain());
   }
 
@@ -63,9 +60,9 @@ class CartesianSystem extends Component {
   onClick(event) {
     if (this.isInDomain(event)) {
       const {x, y} = this.getEventPosition(event);
-      this.setState({
-        dataset: [...this.state.dataset, [round(x, PRECISION), round(y, PRECISION)]]
-      });
+      // this.setState({
+      //   dataset: [...this.state.dataset, [round(x, PRECISION), round(y, PRECISION)]]
+      // });
     }
   }
 
@@ -74,8 +71,8 @@ class CartesianSystem extends Component {
   }
 
   render() {
-    const {dataset} = this.state;
-    const {xScale, yScale} = this.state;
+    const {dataset} = this.props;
+    const {xScale, yScale} = this.props;
     return (
       <svg
         className="CartesianSystem"

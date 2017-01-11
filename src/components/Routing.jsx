@@ -7,13 +7,8 @@ import Editor from 'containers/Editor/Editor';
 
 const Routing = () => ((
   <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Dashboard}></IndexRoute>
-  </Route>
-  <Route path="/editor" component={Editor}>
-    <IndexRoute></IndexRoute>
-  </Route>
-
+    <Route path="/" component={Dashboard}></Route>
+    <Route path="/editor" component={Editor} />
   </Router>
 ));
 
