@@ -6,6 +6,7 @@ const CartesianGrid = ({xScale, yScale}) => {
   const line = d3line();
   const [xMin, xMax] = xScale.domain();
   const [yMin, yMax] = yScale.domain();
+
   return (
     <g className={'CartesianGrid'}>
       <g className={'CartesianGrid__yLines'}>

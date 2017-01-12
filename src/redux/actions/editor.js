@@ -1,5 +1,5 @@
 export const INIT_EDITOR = 'INIT_EDITOR';
-
+export const ADD_TO_DATASET = 'ADD_TO_DATASET';
 /**
  * [initEditor description]
  * @param  {Array}  [dataset=[]] [description]
@@ -14,4 +14,9 @@ export const initEditor = (dataset = [], xScale, yScale, width, height) => ({
   yScale,
   width,
   height
+});
+
+export const addPointToDataset = (point = []) => ({
+  type: 'ADD_TO_DATASET',
+  point: point
 });

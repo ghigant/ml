@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import {size, inRange, round} from 'lodash';
+import {size, inRange, pick} from 'lodash';
 
 
 import Dot from './Dot';
@@ -8,8 +8,8 @@ import CartesianGrid from './CartesianGrid';
 import MouseTracker from './MouseTracker';
 
 import {
-  scaleLinear
-} from 'services/util';
+  addPointToDataset
+} from  'state/actions/editor';
 
 const SYSTEM_PADDING = 30;
 const TICKS = 10;
@@ -60,6 +60,8 @@ class CartesianSystem extends Component {
   onClick(event) {
     if (this.isInDomain(event)) {
       const {x, y} = this.getEventPosition(event);
+
+      this.props.dispatch(addPointToDataset([x, y]));
       // this.setState({
       //   dataset: [...this.state.dataset, [round(x, PRECISION), round(y, PRECISION)]]
       // });
@@ -122,6 +124,8 @@ class CartesianSystem extends Component {
 CartesianSystem.propTypes =  {
   width: React.PropTypes.number.isRequired,
   height: React.PropTypes.number.isRequired,
+  xScale: React.PropTypes.func,
+  yScale: React.PropTypes.func,
   dataset: React.PropTypes.array
 };
 

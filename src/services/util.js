@@ -21,6 +21,6 @@ export function getDomainsFromData(dataset) {
 
   xDomain = [Math.floor(xDomain[0]), Math.ceil(xDomain[1])];
   yDomain = [Math.floor(yDomain[0]), Math.ceil(yDomain[1])];
-
+  
   return {xDomain, yDomain};
 }

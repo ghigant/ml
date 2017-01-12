@@ -1,15 +1,6 @@
 import _ from 'lodash';
-// const size = require('lodash').size;
-// const min = require('lodash').min;
-// const max = require('lodash').max;
-// const range = require('lodash').range;
-// const isArray = require('lodash').isArray;
-// const get = require('lodash').get;
-// const set = require('lodash').set;
-// const pullAt = require('lodash').pullAt;
-// const concat = require('lodash').concat;
 
-const dataset = [0, 4, 5, 20, 25, 39, 43, 44];
+// const dataset = [0, 4, 5, 20, 25, 39, 43, 44];
 
 const singleLinkage = (distances = []) => {
   return _.size(distances) ? _.min(distances) : 0;
@@ -24,7 +15,9 @@ const averageLinkage = (distances) => {
   return totalDistances > 0 ? _.sum(distances) / totalDistances : 0;
 };
 
-const isSingleteton = (cluster) => !_.isObject(_.first(cluster));
+const isSingleteton = (cluster) => {
+  return _.isArray(cluster) && _.isNumber(_.first(cluster));
+};
 
 const getClusterItems = (cluster) => {
   if (isSingleteton(cluster)) {
@@ -90,8 +83,10 @@ const clustering = (data = [], simFn) => {
 
   while(_.size(C) > 1) {
     let distances = getDistanceMatrix(C, simFn);
+    console.log(distances);
     const position = getMinDistance(distances).sort();
-    const [from, to] = position;
+    const from = _.min(position);
+    const to = _.max(position);
 
     const cluster = _.at(C, [from, to]).reduce((result, part) => {
       return _.concat(result, part);
@@ -100,9 +95,9 @@ const clustering = (data = [], simFn) => {
     _.pullAt(C, to);
 
     _.set(C, from, cluster);
-  
-    return C;
   }
+
+  return C;
 }
 
 export default clustering;

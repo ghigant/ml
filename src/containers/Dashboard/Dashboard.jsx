@@ -6,22 +6,28 @@ import Header from 'components/Header/Header';
 import Navigation from 'components/Navigation';
 import { read } from 'services/file';
 import {getDomainsFromData, scaleLinear} from 'services/util';
-
+import {max} from 'lodash';
 
 import {initEditor} from 'state/actions/editor';
 
 let Dashboard = ({dispatch, router}) => {
-  // console.log(rest);
   const onImport = (file) => {
     read(file, (dataset) => {
       const {xDomain, yDomain} = getDomainsFromData(dataset);
-      console.log(xDomain, yDomain);
-      const width = 1024;
-      const height = (1024) / 6;
+      let width = 1024;
+      let height = (1024) / (max(xDomain) / max(yDomain));
+      if (height === 0) {
+        height = 2 * 30;
+      }
+
+      if (width === height) {
+        width = height = 400;
+      }
+
       dispatch(initEditor(
         dataset,
-        scaleLinear(xDomain, [0, width - 2 * 30]),
-        scaleLinear(yDomain [0 + 30, height - 30]),
+        scaleLinear(xDomain, [30, width - 30]),
+        scaleLinear(yDomain.reverse(), [30, height - 30]),
         width,
         height
       ));
@@ -44,6 +50,11 @@ let Dashboard = ({dispatch, router}) => {
 Dashboard.contextTypes = {
   router: PropTypes.object.isRequired
 };
+
+Dashboard.propTypes = {
+  router: PropTypes.object.isRequired,
+  dispatch: PropTypes.func
+}
 
 Dashboard = connect()(Dashboard);
 

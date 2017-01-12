@@ -58,7 +58,7 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
   ].concat(isProduction ? productionPlugins : []),
-  // devtool: '#cheap-eval-source-map',
+  devtool: 'source-map',
   devServer: {
     hot: false,
     inline: true,
