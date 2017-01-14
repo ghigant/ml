@@ -5,7 +5,13 @@ import {Provider} from 'react-redux';
 import {default as appState} from 'state';
 import {createStore} from 'redux'
 
-const store = createStore(appState);
+import {persistStore, autoRehydrate} from 'redux-persist'
+
+const store = createStore(appState, undefined, autoRehydrate())
+
+persistStore(store, {
+  blacklist: ['editor']
+});
 
 import {default as Router} from 'components/Routing';
 

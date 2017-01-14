@@ -96,7 +96,10 @@ const clustering = (data = [], simFn) => {
     const from = _.min(position);
     const to = _.max(position);
 
-    const cluster = _.at(C, [from, to]).reduce((result, part) => {
+    const left = _.get(C, from);
+    const right = _.get(C, to);
+
+    const cluster = [left, right].reduce((result, part) => {
       return _.concat(result, part);
     }, []);
 
@@ -107,7 +110,7 @@ const clustering = (data = [], simFn) => {
     steps.push({
       distances,
       selection: { from, to },
-      cluster: cluster.map(p => p)
+      cluster: [left, right]
     });
 
     _.set(C, from, cluster);

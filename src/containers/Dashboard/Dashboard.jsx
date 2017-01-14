@@ -67,8 +67,9 @@ Dashboard.propTypes = {
 };
 
 const mapToStateToProps = (state) => {
+  const {datasets} = state.dashboard;
   return {
-    datasets: state.dashboard.datasets
+    datasets
   };
 }
 
