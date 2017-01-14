@@ -34,6 +34,7 @@
     "react-swipe-views": "0.0.12",
     "redux": "^3.6.0",
     "sass-loader": "^4.0.2",
+    "shortid": "^2.2.6",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.3"
   }

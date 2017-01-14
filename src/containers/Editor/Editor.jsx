@@ -7,8 +7,11 @@ import {connect} from 'react-redux';
 import Header from 'components/Header/Header';
 import EditorMenu from 'components/EditorMenu';
 import CartesianSystem from 'components/CartesianSystem/CartesianSystem';
+import Dendrogram from 'components/Dendrogram';
 
 import {ButtonToolbar, DropdownButton, MenuItem} from 'react-bootstrap';
+
+// import {}
 
 import {
   default as clustering,
@@ -17,23 +20,27 @@ import {
   averageLinkage
 } from 'services/clustering/bottom-up';
 
-const mapStateToProps = (state) => {
-  return Object.assign({}, state.editor);
-}
+import {
+  updateClustering
+} from 'state/actions/editor';
 
 class Editor extends Component {
   constructor(props) {
     super(props);
   }
 
-  handleClustering(event) {
-    const {dataset} = this.props;
-    const cluster = clustering(dataset, singleLinkage);
+  componentDidMount() {
+    // this.props.dispatch()
+  }
+
+  handleClustering() {
+    const clusters = clustering(this.props.dataset, singleLinkage)
+    this.props.dispatch(updateClustering(clusters));
   }
 
   render() {
     return (
-      <div className={'Editor'}>
+      <div className={'Editor'} data-component={'Editor'}>
         <Header>
           <EditorMenu />
         </Header>
@@ -42,20 +49,17 @@ class Editor extends Component {
         </div>
         <div className="grid">
           <ButtonToolbar>
-
-            <DropdownButton bsStyle={'danger'} title={'Clustering'}>
+            <DropdownButton bsStyle={'danger'} title={'Clustering'} id={'clusteringTypes'}>
               <MenuItem
                 eventKey="1"
-                onClick={(event) => this.handleClustering(event)}>
+                onClick={event => this.handleClustering(event)}>
                 {'Action'}
               </MenuItem>
             </DropdownButton>
           </ButtonToolbar>
         </div>
-        <div className={'Editor__Dendrogram grid'}>
-          <div className="row">
-
-          </div>
+        <div className={'grid'}>
+          <Dendrogram />
         </div>
       </div>
     );
@@ -66,4 +70,4 @@ Editor.propTypes = {
   dataset: PropTypes.array.isRequired
 };
 
-export default connect(mapStateToProps)(Editor);
+export default Editor;

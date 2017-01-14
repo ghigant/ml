@@ -13,34 +13,9 @@ class App extends Component {
     };
   }
 
-  // onImport(file) {
-  //   if (file instanceof File) {
-  //     read(file, (dataset) => {
-  //       // console.log(dataset);
-  //       const {xDomain, yDomain} = getDomainsFromData(dataset);
-  //       this.setState({
-  //         dataset: dataset
-  //       }, () => {
-  //         this.context.router.push('/editor')
-  //       });
-  //     });
-  //   }
-  // }
-
-  // render() {
-  //   return (
-  //     <div>
-  //       {
-  //     React.cloneElement(
-  //     React.Children.only(this.props.children), {
-  //       state: this.state,
-  //       onImport: this.onImport
-  //     }
-  //   )
-  // }
-  // </div>
-  //   )
-  // }
+  render() {
+    return <div className={'App'} data-component={'App'} />;
+  }
 }
 
 App.propTypes = {

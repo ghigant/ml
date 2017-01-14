@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {pick} from 'lodash';
+
 import './Dot.scss';
 
 class Dot extends Component {
@@ -30,7 +32,7 @@ class Dot extends Component {
         onMouseMove={e => this.onMouseMove(e)}
         onMouseUp={(e) => this.onMouseUp(e)}
         onMouseDown={e => this.onMouseDown(e)}
-        {...this.props}>
+        {...pick(this.props, ['cx', 'cy', 'r'])}>
       </circle>
     );
 

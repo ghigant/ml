@@ -1,8 +1,9 @@
-import {omit} from 'lodash';
+import { omit } from 'lodash';
 
 import {
   INIT_EDITOR,
-  ADD_TO_DATASET
+  ADD_TO_DATASET,
+  UPDATE_CLUSTERING
 } from '../actions/editor';
 
 import {editor as initialState} from '../initialState';
@@ -20,8 +21,11 @@ const editor = (state = initialState, action) => {
     });
   }
 
-  case 'UPDATE_DATASET':
-    return state;
+  case UPDATE_CLUSTERING:
+    return Object.assign({}, state, {
+      clustering: action.clustering
+    });
+
   default:
     return state;
   }

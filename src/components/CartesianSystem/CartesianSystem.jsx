@@ -20,7 +20,7 @@ import './CartesianSystem.scss';
 class CartesianSystem extends Component {
   constructor(props) {
     super(props);
-    const {width, height} = props;
+
     this.state = {
       mousePosition: null
     };
@@ -72,6 +72,12 @@ class CartesianSystem extends Component {
     console.log('onDotMove', index, this.getEventPosition(event));
   }
 
+  onMouseLeave() {
+    this.setState({
+      mousePosition: null
+    });
+  }
+
   render() {
     const {dataset} = this.props;
     const {xScale, yScale} = this.props;
@@ -81,7 +87,11 @@ class CartesianSystem extends Component {
         width={this.props.width}
         height={this.props.height}
         onClick={e => this.onClick(e)}
-        onMouseMove={e => this.onMouseMove(e)}>
+        onMouseMove={e => this.onMouseMove(e)}
+        onMouseLeave={e => this.onMouseLeave(e)}>
+        {/*
+          Renders Cartesian System
+        */}
         <g className={'CartesianSystem__Grid'} transform="translate(0.5, 0.5)">
           <CartesianGrid xScale={xScale} yScale={yScale} />
         </g>
@@ -96,13 +106,13 @@ class CartesianSystem extends Component {
         {
           this.state.mousePosition && (
             <MouseTracker
-              className={'plm'}
+              className={'MouseTracker'}
               xScale={xScale}
               yScale={yScale}
               {...this.state.mousePosition }/>
           )
         }
-        <g className={'CartesianSystem__Points'}>
+        <g className={'CartesianSystem__Dots'}>
           {
             dataset.map((point, index) => {
               return (
@@ -126,7 +136,8 @@ CartesianSystem.propTypes =  {
   height: React.PropTypes.number.isRequired,
   xScale: React.PropTypes.func,
   yScale: React.PropTypes.func,
-  dataset: React.PropTypes.array
+  dataset: React.PropTypes.array,
+  dispatch: React.PropTypes.func
 };
 
 CartesianSystem.defaultProps = {

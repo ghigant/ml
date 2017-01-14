@@ -43,12 +43,12 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss', '.css'],
     alias: {
+      'config': path.join(__dirname, 'src/config'),
       'containers': path.join(__dirname, 'src/containers'),
       'components': path.join(__dirname, 'src/components'),
       'services': path.join(__dirname, 'src/services'),
       'state': path.join(__dirname, 'src/redux'),
-      'data': path.join(__dirname, 'src/data'),
-
+      'data': path.join(__dirname, 'src/data')
     }
   },
   plugins: [

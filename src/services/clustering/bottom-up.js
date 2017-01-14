@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-// const dataset = [0, 4, 5, 20, 25, 39, 43, 44];
-
 const singleLinkage = (distances = []) => {
   return _.size(distances) ? _.min(distances) : 0;
 };
@@ -13,6 +11,17 @@ const completeLinkage = (distances) => {
 const averageLinkage = (distances) => {
   var totalDistances = _.size(distances);
   return totalDistances > 0 ? _.sum(distances) / totalDistances : 0;
+};
+
+export const cluterHeight = (items) => {
+  const size = _.size(items);
+  const sum = _.range(0, size - 1).reduce((sum, i) => {
+    return sum + _.range(i + 1, size).reduce((subsum, j) => {
+      return subsum + euclidianDistance(items[i], items[j]);
+    }, 0);
+  }, 0);
+
+  return sum / (size * (size - 1) / 2);
 };
 
 const isSingleteton = (cluster) => {
@@ -37,8 +46,6 @@ const euclidianDistance = (p, q) => {
     }, 0)
   );
 };
-
-
 
 const distance = (from, to, sim = singleLinkage) => {
   let distances = _.reduce(from, (dists, fromItem) => {
@@ -79,11 +86,12 @@ const getMinDistance = (matrix) => {
 
 const clustering = (data = [], simFn) => {
   const c = data.map((d) => _.isArray(d) ? d : [d]);
+  const steps = [];
   const C = c.map((d) => [d]);
 
   while(_.size(C) > 1) {
     let distances = getDistanceMatrix(C, simFn);
-    console.log(distances);
+
     const position = getMinDistance(distances).sort();
     const from = _.min(position);
     const to = _.max(position);
@@ -94,10 +102,18 @@ const clustering = (data = [], simFn) => {
 
     _.pullAt(C, to);
 
+    console.log('h:', cluterHeight(cluster));
+
+    steps.push({
+      distances,
+      selection: { from, to },
+      cluster: cluster.map(p => p)
+    });
+
     _.set(C, from, cluster);
   }
 
-  return C;
+  return steps;
 }
 
 export default clustering;
@@ -107,5 +123,3 @@ export {
   completeLinkage,
   averageLinkage
 };
-
-// clustering(dataset, completeLinkage);

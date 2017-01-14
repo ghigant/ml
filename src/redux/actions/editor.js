@@ -1,12 +1,7 @@
 export const INIT_EDITOR = 'INIT_EDITOR';
 export const ADD_TO_DATASET = 'ADD_TO_DATASET';
-/**
- * [initEditor description]
- * @param  {Array}  [dataset=[]] [description]
- * @param  {[type]} xScale       [description]
- * @param  {[type]} yScale       [description]
- * @return {[type]}              [description]
- */
+export const UPDATE_CLUSTERING = 'UPDATE_CLUSTERING';
+
 export const initEditor = (dataset = [], xScale, yScale, width, height) => ({
   type: INIT_EDITOR,
   dataset,
@@ -16,7 +11,14 @@ export const initEditor = (dataset = [], xScale, yScale, width, height) => ({
   height
 });
 
+export const updateClustering = (clusters) => {
+  return {
+    type: UPDATE_CLUSTERING,
+    clustering: clusters
+  };
+};
+
 export const addPointToDataset = (point = []) => ({
-  type: 'ADD_TO_DATASET',
-  point: point
+  type: ADD_TO_DATASET,
+  point
 });

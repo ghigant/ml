@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import dataset from './reducers/dataset';
+
+import dashboard from './reducers/dashboard';
 import editor from './reducers/editor';
 
 const appState = combineReducers({
-  dataset,
+  dashboard,
   editor
 });
 

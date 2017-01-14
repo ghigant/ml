@@ -1,28 +1,28 @@
 import React, {PropTypes} from 'react';
 
-import {connect} from 'react-redux';
-
 import Header from 'components/Header/Header';
 import Navigation from 'components/Navigation';
+import {Link} from 'react-router';
+
 import { read } from 'services/file';
-import {getDomainsFromData, scaleLinear} from 'services/util';
-import {max} from 'lodash';
+import {connect} from 'react-redux';
+
+import {
+  getDomainsFromData,
+  scaleLinear,
+  getBoardSize
+} from 'services/util';
 
 import {initEditor} from 'state/actions/editor';
+import {addDataset} from 'state/actions/dashboard';
 
-let Dashboard = ({dispatch, router}) => {
+let Dashboard = ({dispatch, router, datasets}) => {
   const onImport = (file) => {
     read(file, (dataset) => {
       const {xDomain, yDomain} = getDomainsFromData(dataset);
-      let width = 1024;
-      let height = (1024) / (max(xDomain) / max(yDomain));
-      if (height === 0) {
-        height = 2 * 30;
-      }
+      const {width, height} = getBoardSize(xDomain, yDomain);
 
-      if (width === height) {
-        width = height = 400;
-      }
+      dispatch(addDataset(dataset));
 
       dispatch(initEditor(
         dataset,
@@ -42,6 +42,15 @@ let Dashboard = ({dispatch, router}) => {
       </Header>
       <div style={{paddingTop: "50px"}}>
         <h1>Dashboard</h1>
+        <ul>
+        {
+          datasets.map((dataset, index) => (
+            <li key={`dataset-${index}-${dataset.id}`}>
+              <Link to={`/editor/${dataset.id}`}>{dataset.id}</Link>
+            </li>
+          ))
+        }
+        </ul>
       </div>
     </div>
   );
@@ -53,9 +62,16 @@ Dashboard.contextTypes = {
 
 Dashboard.propTypes = {
   router: PropTypes.object.isRequired,
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  datasets: PropTypes.array
+};
+
+const mapToStateToProps = (state) => {
+  return {
+    datasets: state.dashboard.datasets
+  };
 }
 
-Dashboard = connect()(Dashboard);
+Dashboard = connect(mapToStateToProps)(Dashboard);
 
 export default Dashboard;
