@@ -25,6 +25,8 @@ export const cluterHeight = (items) => {
 };
 
 const isSingleteton = (cluster) => {
+  // const values = _.first(cluster);
+  // return _.isArray(values) && _.isNumber(_.first(values));
   return _.isArray(cluster) && _.isNumber(_.first(cluster));
 };
 
@@ -87,35 +89,53 @@ const getMinDistance = (matrix) => {
 const clustering = (data = [], simFn) => {
   const c = data.map((d) => _.isArray(d) ? d : [d]);
   const steps = [];
+  const cc = c.map((d, index) => ({
+    v: [d],
+    c: index,
+    h: 0
+  }));
+
   const C = c.map((d) => [d]);
 
   while(_.size(C) > 1) {
     let distances = getDistanceMatrix(C, simFn);
 
     const position = getMinDistance(distances).sort();
+
     const from = _.min(position);
     const to = _.max(position);
 
-    const left = _.get(C, from);
-    const right = _.get(C, to);
-
-    const cluster = [left, right].reduce((result, part) => {
+    const values = _.at(C, [from, to]).reduce((result, part) => {
       return _.concat(result, part);
     }, []);
 
+    const left = _.get(cc, from);
+    const right = _.get(cc, to);
+
+    const cHeight = cluterHeight(values);
+    
+    const cluster = {
+      v: values,
+      h: cHeight,
+      c: (left.c + right.c) / 2,
+      d: right.c - left.c,
+      path: [
+        [left.c, left.h],
+        [left.c, cHeight],
+        [right.c, cHeight],
+        [right.c, right.h]
+      ]
+    }
+
     _.pullAt(C, to);
+    _.pullAt(cc, to);
 
-    console.log('h:', cluterHeight(cluster));
+    _.set(C, from, values);
+    _.set(cc, from, cluster);
 
-    steps.push({
-      distances,
-      selection: { from, to },
-      cluster: [left, right]
-    });
-
-    _.set(C, from, cluster);
+    steps.push(cluster);
   }
-
+  // console.log(steps);
   return steps;
 }
 

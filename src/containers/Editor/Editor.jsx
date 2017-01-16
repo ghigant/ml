@@ -2,16 +2,12 @@ import './Editor.scss';
 
 import React, {Component, PropTypes} from 'react';
 
-import {connect} from 'react-redux';
-
 import Header from 'components/Header/Header';
 import EditorMenu from 'components/EditorMenu';
 import CartesianSystem from 'components/CartesianSystem/CartesianSystem';
 import Dendrogram from 'components/Dendrogram';
 
 import {ButtonToolbar, DropdownButton, MenuItem} from 'react-bootstrap';
-
-// import {}
 
 import {
   default as clustering,
@@ -27,14 +23,23 @@ import {
 class Editor extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selection: []
+    };
   }
 
   componentDidMount() {
     // this.props.dispatch()
   }
 
-  handleClustering() {
-    const clusters = clustering(this.props.dataset, singleLinkage)
+  onSelect(selection) {
+    this.setState({
+      selection: [...selection]
+    });
+  }
+
+  handleClustering(simFn) {
+    const clusters = clustering(this.props.dataset, simFn)
     this.props.dispatch(updateClustering(clusters));
   }
 
@@ -45,21 +50,31 @@ class Editor extends Component {
           <EditorMenu />
         </Header>
         <div className={'Editor__CartesianSystem grid'}>
-          <CartesianSystem {...this.props}/>
+          <CartesianSystem {...this.props} selected={this.state.selection}/>
         </div>
         <div className="grid">
           <ButtonToolbar>
             <DropdownButton bsStyle={'danger'} title={'Clustering'} id={'clusteringTypes'}>
               <MenuItem
                 eventKey="1"
-                onClick={event => this.handleClustering(event)}>
-                {'Action'}
+                onClick={() => this.handleClustering(singleLinkage)}>
+                {'Single Linkage'}
+              </MenuItem>
+              <MenuItem
+                eventKey="1"
+                onClick={() => this.handleClustering(completeLinkage)}>
+                {'Complete Linkage'}
+              </MenuItem>
+              <MenuItem
+                eventKey="1"
+                onClick={() => this.handleClustering(averageLinkage)}>
+                {'Average Linkage'}
               </MenuItem>
             </DropdownButton>
           </ButtonToolbar>
         </div>
         <div className={'grid'}>
-          <Dendrogram />
+          <Dendrogram onSelect={(data) => this.onSelect(data)}/>
         </div>
       </div>
     );
@@ -67,7 +82,8 @@ class Editor extends Component {
 }
 
 Editor.propTypes = {
-  dataset: PropTypes.array.isRequired
+  dataset: PropTypes.array.isRequired,
+  dispatch: PropTypes.func
 };
 
 export default Editor;

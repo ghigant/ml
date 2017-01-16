@@ -26,13 +26,17 @@ class Dot extends Component {
   }
 
   render() {
+    const classNames = [
+      'Dot',
+      this.props.isSelected ? 'is-selected' : ''
+    ];
     return (
       <circle
-        className={'Dot'}
+        className={classNames.join(' ')}
         onMouseMove={e => this.onMouseMove(e)}
         onMouseUp={(e) => this.onMouseUp(e)}
         onMouseDown={e => this.onMouseDown(e)}
-        {...pick(this.props, ['cx', 'cy', 'r'])}>
+        {...pick(this.props, ['cx', 'cy', 'r', 'transform'])}>
       </circle>
     );
 

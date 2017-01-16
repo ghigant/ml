@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-import {range, size} from 'lodash';
+
+import {range, size, first, last} from 'lodash';
+import * as d3 from 'd3';
 
 import {scaleLinear} from 'services/util';
 
@@ -7,12 +9,32 @@ class Dendrogram extends Component {
   constructor(props) {
     super(props);
   }
+
+  onRootClick(index, event) {
+    console.log(index, event.currentTarget);
+    console.log(this.props.clustering[index].v);
+    this.props.onSelect(this.props.clustering[index].v)
+  }
+
   render() {
     const {
       dataset,
-      clustering,
-      xScale
+      clustering
     } = this.props;
+
+    const xScale = scaleLinear(
+      [0, size(dataset)],
+      [20, this.props.width - 40]
+    );
+
+    const yScale = scaleLinear(
+      [0, Math.ceil(last(clustering) ? last(clustering).h : 0)],
+      [this.props.height - 20, 40]
+    );
+
+    const line = d3.line()
+      .x((d) => xScale(first(d)))
+      .y((d) => yScale(last(d)))
 
     return (
       <svg
@@ -20,13 +42,25 @@ class Dendrogram extends Component {
         width={this.props.width}
         height={this.props.height}>
         {
-
           (clustering || []).map((step, i) => {
             return (
-              <path
-                key={`path-${i}`}
-
+              <g key={`path-${i}`}>
+                <path
+                  key={`path-${i}`}
+                  d={line(step.path)}
+                  stroke={'#000'}
+                  fill="none"
+                  strokeWidth={1}
+                  transform={`translate(${(this.props.size) / 2}, 0)`}
+                />
+              <circle
+                cx={xScale(step.c)}
+                cy={yScale(step.h)}
+                r={this.props.size / 2}
+                transform={`translate(${this.props.size / 2}, 0)`}
+                onClick={e => this.onRootClick(i, e)}
               />
+              </g>
             );
           })
         }
@@ -66,11 +100,9 @@ Dendrogram.propTypes = {
 };
 
 Dendrogram.defaultProps = {
-  width: 1024,
-  height: 400,
-  xScale: scaleLinear([0, 8], [20, 1004]),
-  yScale: scaleLinear([0, 8], [20, 380]),
-  size: 8
+  width: 1200,
+  height: 500,
+  size: 6
 }
 
 export default Dendrogram;

@@ -1,8 +1,12 @@
 .Dot {
   stroke: #000;
   fill: #000;
-  
+
   &:hover {
     fill: #ccc;
   }
+}
+
+.Dot.is-selected {
+  fill: blue;
 }

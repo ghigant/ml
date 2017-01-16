@@ -13,7 +13,6 @@ import {
 
 const SYSTEM_PADDING = 30;
 const TICKS = 10;
-const PRECISION = 1;
 
 import './CartesianSystem.scss';
 
@@ -60,11 +59,7 @@ class CartesianSystem extends Component {
   onClick(event) {
     if (this.isInDomain(event)) {
       const {x, y} = this.getEventPosition(event);
-
       this.props.dispatch(addPointToDataset([x, y]));
-      // this.setState({
-      //   dataset: [...this.state.dataset, [round(x, PRECISION), round(y, PRECISION)]]
-      // });
     }
   }
 
@@ -115,11 +110,16 @@ class CartesianSystem extends Component {
         <g className={'CartesianSystem__Dots'}>
           {
             dataset.map((point, index) => {
+              const isSelected = _.findIndex(this.props.selected, (sel) => {
+                return point[0] === sel[0] && point[1] === sel[1];
+              }) !== -1;
               return (
-                <Dot key={`cs-dot-${index}`}
+                <Dot
+                  key={`cs-dot-${index}`}
                   cx={xScale(point[0])}
                   cy={yScale(size(point) === 1 ? 0 : point[1])}
                   r={5}
+                  isSelected={isSelected}
                   onDotMove={this.onDotMove.bind(this, index)}
                 />
               );
