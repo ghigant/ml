@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import {range, size, first, last} from 'lodash';
+import {range, size, first, last, max} from 'lodash';
 import * as d3 from 'd3';
 
 import {scaleLinear} from 'services/util';
@@ -19,8 +19,13 @@ class Dendrogram extends Component {
       [20, this.props.width - 40]
     );
 
+    const maxY = clustering.reduce((h, c) => {
+      // console.log(c);
+      return max([h, c.h])
+    }, 0);
+  
     const yScale = scaleLinear(
-      [0, Math.ceil(last(clustering) ? last(clustering).h : 0)],
+      [0, Math.ceil(maxY)],
       [this.props.height - 20, 40]
     );
 

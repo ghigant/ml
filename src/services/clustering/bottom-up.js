@@ -38,7 +38,7 @@ const getClusterItems = (cluster) => {
   }, []);
 }
 
-const euclidianDistance = (p, q) => {
+export const euclidianDistance = (p, q) => {
   return Math.sqrt(
     p.reduce((sum, pi, i) => {
       let qi = q[i];

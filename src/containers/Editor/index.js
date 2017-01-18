@@ -1,13 +1,15 @@
 import Editor from './Editor';
 
 import {connect} from 'react-redux';
-import {find} from 'lodash';
+import {find, range, size, sortBy} from 'lodash';
 
 import {
   getDomainsFromData,
   scaleLinear,
   getBoardSize
 } from 'services/util';
+
+import {euclidianDistance} from 'services/clustering/bottom-up';
 
 const mapToStateToProps = (state, props) => {
 
@@ -24,8 +26,23 @@ const mapToStateToProps = (state, props) => {
   width += 60;
   height += 60;
 
+  let data = dataset ? dataset.data : state.editor.dataset;
+
+  // console.log(data);
+  if (size(data) > 1 && false) {
+    const allDistances = range(1, data.length).map((index) => {
+      // console.log(data[index - 1], data[index]);
+      return euclidianDistance(data[index - 1], data[index]);
+    });
+
+    data = sortBy(data, (item, index) => {
+      return index;
+    });
+    console.log(allDistances);
+  }
+
   return {
-    dataset: dataset ? dataset.data : state.editor.dataset,
+    dataset: data,
     isDendrogramVisible: !!state.editor.clustering,
     xScale: scaleLinear(xDomain, [30, width - 30]),
     yScale: scaleLinear(yDomain.reverse(), [30, height - 30]),
