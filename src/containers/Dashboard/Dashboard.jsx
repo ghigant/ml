@@ -32,7 +32,7 @@ let Dashboard = ({dispatch, router, datasets}) => {
       <Header>
         <Navigation onImport={onImport} />
       </Header>
-      <div style={{paddingTop: "50px"}}>
+      <div style={{paddingTop: "70px"}}>
         <div className={'row'}>
         {
           datasets.map((dataset, index) => (
