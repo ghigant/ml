@@ -3,6 +3,7 @@ import React, {PropTypes} from 'react';
 import Header from 'components/Header/Header';
 import Navigation from 'components/Navigation';
 import {Link} from 'react-router';
+import {Button} from 'react-bootstrap';
 
 import { read } from 'services/file';
 import {connect} from 'react-redux';
@@ -14,7 +15,7 @@ import {
 } from 'services/util';
 
 import {initEditor} from 'state/actions/editor';
-import {addDataset} from 'state/actions/dashboard';
+import {addDataset, removeDataset} from 'state/actions/dashboard';
 
 let Dashboard = ({dispatch, router, datasets}) => {
   const onImport = (file) => {
@@ -34,6 +35,10 @@ let Dashboard = ({dispatch, router, datasets}) => {
       router.push('/editor');
     });
   }
+
+  const onRemove = (datasetId) => {
+    dispatch(removeDataset(datasetId));
+  };
 
   return (
     <div className={'container'}>
@@ -64,6 +69,11 @@ let Dashboard = ({dispatch, router, datasets}) => {
                     to={`/editor/${dataset.id}`}>
                     {'Open'}
                   </Link>
+                  <Button
+                    bsStyle={'danger'}
+                    onClick={() => onRemove(dataset.id)}>
+                    Remove
+                  </Button>
                 </div>
               </div>
             </div>

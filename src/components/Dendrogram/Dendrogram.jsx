@@ -33,16 +33,7 @@ class Dendrogram extends Component {
       .y((d) => yScale(last(d)))
 
     clustering = clustering || [];
-    console.log(clustering);
-    // const maxHeight =  last(clustering).h;
-    // // console.log('maxHeight', maxHeight);
-    // const sH = maxHeight / size(clustering);
-    // console.log('maxHeight', maxHeight, sH);
-    // clustering = clustering.map((step, index) => {
-    //   return Object.assign({}, step, {
-    //     h: sH * (index + 1)
-    //   })
-    // });
+        
     return (
       <svg
         className={'Dendrogram'}
@@ -107,8 +98,8 @@ Dendrogram.propTypes = {
 };
 
 Dendrogram.defaultProps = {
-  width: 1980,
-  height: 1080,
+  width: 1920,
+  height: 700,
   size: 6
 }
 

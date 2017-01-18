@@ -2,7 +2,8 @@ import shortid from 'shortid';
 
 import {
   INIT_DASHBOARD,
-  ADD_DATASET
+  ADD_DATASET,
+  REMOVE_DATASET,
 } from '../actions/dashboard';
 
 import {dashboard as initialState} from '../initialState';
@@ -23,7 +24,10 @@ const dashboard = (state = initialState, action) => {
       }]
     });
   }
-
+  case REMOVE_DATASET:
+    return  Object.assign({}, state, {
+      datasets: state.datasets.filter(set => set.id !== action.id)
+    });
   default:
     return state;
   }
