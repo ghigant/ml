@@ -1,3 +1,5 @@
+import shortid from 'shortid';
+
 export const INIT_DASHBOARD = 'INIT_DASHBOARD';
 export const ADD_DATASET = 'ADD_DATASET';
 export const REMOVE_DATASET = 'REMOVE_DATASET';
@@ -12,6 +14,7 @@ export function initDasboard(datasets = []) {
 export function addDataset(dataset = []) {
   return {
     type: ADD_DATASET,
+    id: shortid.generate(),
     dataset
   };
 }

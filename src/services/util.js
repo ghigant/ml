@@ -31,7 +31,7 @@ export function getScreenSize() {
 }
 
 export function getBoardSize(xDomain, yDomain) {
-  let width = 400, height = 400;
+  let width = 340, height = 340;
 
   const xUnits = max(xDomain) - min(xDomain);
   const yUnits = max(yDomain) - min(yDomain);

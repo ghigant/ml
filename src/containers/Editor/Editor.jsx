@@ -16,16 +16,9 @@ import {
   averageLinkage
 } from 'services/clustering/bottom-up';
 
-import {
-  updateClustering,
-  initEditor
-} from 'state/actions/editor';
-
-import {
-  getDomainsFromData,
-  scaleLinear,
-  getBoardSize
-} from 'services/util';
+import {addDataset} from 'state/actions/dashboard';
+import { updateClustering, clearDataset } from 'state/actions/editor';
+import {size} from 'lodash';
 
 class Editor extends Component {
   constructor(props) {
@@ -36,19 +29,15 @@ class Editor extends Component {
   }
 
   componentDidMount() {
-    const {xDomain, yDomain} = getDomainsFromData(this.props.dataset);
-    let {width, height} = getBoardSize(xDomain, yDomain);
-    width += 60;
-    height += 60;
-    this.props.dispatch(initEditor(
-      this.props.dataset,
-      scaleLinear(xDomain, [30, width - 30]),
-      scaleLinear(yDomain.reverse(), [30, height - 30]),
-      width,
-      height
-    ));
+    this.props.dispatch(updateClustering(null));
   }
-
+  componentWillUnmount() {
+    const {dispatch, dataset, routeParams} = this.props;
+    if (size(dataset) && !routeParams.id) {
+      dispatch(addDataset(dataset));
+    }
+    dispatch(clearDataset());
+  }
   onSelect(selection) {
     this.setState({
       selection: [...selection]
@@ -62,7 +51,7 @@ class Editor extends Component {
 
   render() {
     return (
-      <div className={'Editor'} data-component={'Editor'}>
+      <div className={'Editor container'} data-component={'Editor'}>
         <Header>
           <EditorMenu />
         </Header>
@@ -90,13 +79,16 @@ class Editor extends Component {
               </Button>
             </ButtonGroup>
         </div>
-        <div className={'grid'}>
-          {
-            this.props.isDendrogramVisible && (
-              <Dendrogram onSelect={(data) => this.onSelect(data)}/>
-            )
-          }
-        </div>
+        {
+          this.props.isDendrogramVisible && (
+            <div className={'row'}>
+              <Dendrogram
+                clustering={this.props.clustering}
+                dataset={this.props.dataset}
+                onSelect={(data) => this.onSelect(data)}/>
+            </div>
+          )
+        }
       </div>
     );
   }
@@ -104,7 +96,9 @@ class Editor extends Component {
 
 Editor.propTypes = {
   dataset: PropTypes.array.isRequired,
+  clustering: PropTypes.array,
   dispatch: PropTypes.func,
+  routeParams: PropTypes.object,
   isDendrogramVisible: PropTypes.bool
 };
 

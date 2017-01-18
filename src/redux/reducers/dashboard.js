@@ -1,5 +1,3 @@
-import shortid from 'shortid';
-
 import {
   INIT_DASHBOARD,
   ADD_DATASET,
@@ -19,7 +17,7 @@ const dashboard = (state = initialState, action) => {
   case ADD_DATASET: {
     return Object.assign({}, state, {
       datasets: [...state.datasets, {
-        id: shortid.generate(),
+        id: action.id,
         data: action.dataset
       }]
     });

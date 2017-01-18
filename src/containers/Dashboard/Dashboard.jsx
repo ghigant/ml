@@ -7,32 +7,32 @@ import {Button} from 'react-bootstrap';
 
 import { read } from 'services/file';
 import {connect} from 'react-redux';
+import {size} from 'lodash';
 
-import {
-  getDomainsFromData,
-  scaleLinear,
-  getBoardSize
-} from 'services/util';
-
-import {initEditor} from 'state/actions/editor';
+// import {initEditor} from 'state/actions/editor';
 import {addDataset, removeDataset} from 'state/actions/dashboard';
 
 let Dashboard = ({dispatch, router, datasets}) => {
   const onImport = (file) => {
     read(file, (dataset) => {
-      const {xDomain, yDomain} = getDomainsFromData(dataset);
-      const {width, height} = getBoardSize(xDomain, yDomain);
+      // const {xDomain, yDomain} = getDomainsFromData(dataset);
+      // const {width, height} = getBoardSize(xDomain, yDomain);
 
-      dispatch(addDataset(dataset));
+      if (size(dataset)) {
+        const action = addDataset(dataset);
+        dispatch(action);
+        router.push(`/editor/${action.id}`);
+      }
 
-      dispatch(initEditor(
-        dataset,
-        scaleLinear(xDomain, [30, width - 30]),
-        scaleLinear(yDomain.reverse(), [30, height - 30]),
-        width,
-        height
-      ));
-      router.push('/editor');
+
+      // dispatch(initEditor(
+      //   dataset,
+      //   scaleLinear(xDomain, [30, width - 30]),
+      //   scaleLinear(yDomain.reverse(), [30, height - 30]),
+      //   width,
+      //   height
+      // ));
+      // router.push('/editor');
     });
   }
 
@@ -56,7 +56,8 @@ let Dashboard = ({dispatch, router, datasets}) => {
             >
               <div className={'thumbnail'}>
                 <Link
-                  to={`/editor/${dataset.id}`}>
+                  to={`/editor/${dataset.id}`}
+                  onClick={() => console.log('onClick')}>
                   <svg
                     className="placeholder"
                     width={170}

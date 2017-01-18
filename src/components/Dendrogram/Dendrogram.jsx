@@ -6,11 +6,7 @@ import * as d3 from 'd3';
 import {scaleLinear} from 'services/util';
 
 class Dendrogram extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  onRootClick(index, event) {
+  onRootClick(index) {
     this.props.onSelect(this.props.clustering[index].v)
   }
 
@@ -33,7 +29,7 @@ class Dendrogram extends Component {
       .y((d) => yScale(last(d)))
 
     clustering = clustering || [];
-        
+
     return (
       <svg
         className={'Dendrogram'}
@@ -87,18 +83,17 @@ class Dendrogram extends Component {
 }
 
 Dendrogram.propTypes = {
-  xScale: PropTypes.func,
-  yScale: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
   size: PropTypes.number,
   dataset: PropTypes.array,
   clustering: PropTypes.array,
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  onSelect: PropTypes.func
 };
 
 Dendrogram.defaultProps = {
-  width: 1920,
+  width: 1200,
   height: 700,
   size: 6
 }
