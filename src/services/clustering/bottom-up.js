@@ -25,8 +25,6 @@ export const cluterHeight = (items) => {
 };
 
 const isSingleteton = (cluster) => {
-  // const values = _.first(cluster);
-  // return _.isArray(values) && _.isNumber(_.first(values));
   return _.isArray(cluster) && _.isNumber(_.first(cluster));
 };
 
@@ -113,12 +111,20 @@ const clustering = (data = [], simFn) => {
     const right = _.get(cc, to);
 
     const cHeight = cluterHeight(values);
-    
+
     const cluster = {
       v: values,
       h: cHeight,
       c: (left.c + right.c) / 2,
       d: right.c - left.c,
+      left: {
+        center: left.c,
+        height: left.h
+      },
+      right: {
+        center: right.c,
+        height: right.h
+      },
       path: [
         [left.c, left.h],
         [left.c, cHeight],

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import {size, inRange, pick} from 'lodash';
-
+import {size, inRange} from 'lodash';
+import _ from 'lodash';
 
 import Dot from './Dot';
 import CartesianGrid from './CartesianGrid';

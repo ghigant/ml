@@ -42,15 +42,34 @@ let Dashboard = ({dispatch, router, datasets}) => {
       </Header>
       <div style={{paddingTop: "50px"}}>
         <h1>Dashboard</h1>
-        <ul>
+        <div className={'row'}>
         {
           datasets.map((dataset, index) => (
-            <li key={`dataset-${index}-${dataset.id}`}>
-              <Link to={`/editor/${dataset.id}`}>{dataset.id}</Link>
-            </li>
+            <div
+              className={"col-xs-6 col-md-3"}
+              key={`dataset-${index}-${dataset.id}`}
+            >
+              <div className={'thumbnail'}>
+                <Link
+                  to={`/editor/${dataset.id}`}>
+                  <svg
+                    className="placeholder"
+                    width={170}
+                    height={170}>
+                  </svg>
+                </Link>
+                <div className={'caption'}>
+                  <Link
+                    className={'btn btn-primary'}
+                    to={`/editor/${dataset.id}`}>
+                    {'Open'}
+                  </Link>
+                </div>
+              </div>
+            </div>
           ))
         }
-        </ul>
+      </div>
       </div>
     </div>
   );

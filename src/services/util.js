@@ -32,19 +32,26 @@ export function getScreenSize() {
 
 export function getBoardSize(xDomain, yDomain) {
   let width = 400, height = 400;
+
   const xUnits = max(xDomain) - min(xDomain);
   const yUnits = max(yDomain) - min(yDomain);
-  const diff = Math.abs(xUnits - yUnits);
 
-  if (xUnits > yUnits) {
-    width += diff * (width / xUnits);
-  } else if (xUnits < yUnits) {
-    height = diff * (height / yUnits);
+  const appRatio = 1140 / 340; // 3
+  const dataRatio = xUnits / yUnits;
+
+  if (dataRatio !== 1) {
+    if (dataRatio > appRatio) {
+      const unitSize = 1140 / xUnits;
+      height = isNaN(unitSize) ? 0 : unitSize * yUnits;
+      width = 1140;
+
+    } else if(dataRatio < appRatio) {
+      const unitSize = 340 / yUnits;
+      height = 340;
+      width = isNaN(unitSize) ? 0 : unitSize * xUnits;
+    }
   }
 
-  if(xUnits === diff) {
-    width = 1200;
-    height = 60;
-  }
+
   return { width, height };
 }

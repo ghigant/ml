@@ -11,16 +11,12 @@ class Dendrogram extends Component {
   }
 
   onRootClick(index, event) {
-    console.log(index, event.currentTarget);
-    console.log(this.props.clustering[index].v);
     this.props.onSelect(this.props.clustering[index].v)
   }
 
   render() {
-    const {
-      dataset,
-      clustering
-    } = this.props;
+    const {dataset} = this.props;
+    let {clustering} = this.props;
 
     const xScale = scaleLinear(
       [0, size(dataset)],
@@ -36,13 +32,24 @@ class Dendrogram extends Component {
       .x((d) => xScale(first(d)))
       .y((d) => yScale(last(d)))
 
+    clustering = clustering || [];
+    console.log(clustering);
+    // const maxHeight =  last(clustering).h;
+    // // console.log('maxHeight', maxHeight);
+    // const sH = maxHeight / size(clustering);
+    // console.log('maxHeight', maxHeight, sH);
+    // clustering = clustering.map((step, index) => {
+    //   return Object.assign({}, step, {
+    //     h: sH * (index + 1)
+    //   })
+    // });
     return (
       <svg
         className={'Dendrogram'}
         width={this.props.width}
         height={this.props.height}>
         {
-          (clustering || []).map((step, i) => {
+          clustering.map((step, i) => {
             return (
               <g key={`path-${i}`}>
                 <path
@@ -56,8 +63,8 @@ class Dendrogram extends Component {
               <circle
                 cx={xScale(step.c)}
                 cy={yScale(step.h)}
-                r={this.props.size / 2}
-                transform={`translate(${this.props.size / 2}, 0)`}
+                r={this.props.size / 1.5}
+                transform={`translate(${this.props.size / 1.5}, 0)`}
                 onClick={e => this.onRootClick(i, e)}
               />
               </g>
@@ -100,8 +107,8 @@ Dendrogram.propTypes = {
 };
 
 Dendrogram.defaultProps = {
-  width: 1200,
-  height: 500,
+  width: 1980,
+  height: 1080,
   size: 6
 }
 

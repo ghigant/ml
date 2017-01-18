@@ -8,7 +8,8 @@ export const initEditor = (dataset = [], xScale, yScale, width, height) => ({
   xScale,
   yScale,
   width,
-  height
+  height,
+  clustering: null
 });
 
 export const updateClustering = (clusters) => {

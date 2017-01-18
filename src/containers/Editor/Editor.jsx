@@ -7,7 +7,7 @@ import EditorMenu from 'components/EditorMenu';
 import CartesianSystem from 'components/CartesianSystem/CartesianSystem';
 import Dendrogram from 'components/Dendrogram';
 
-import {ButtonToolbar, DropdownButton, MenuItem} from 'react-bootstrap';
+import {ButtonGroup, Button} from 'react-bootstrap';
 
 import {
   default as clustering,
@@ -17,8 +17,15 @@ import {
 } from 'services/clustering/bottom-up';
 
 import {
-  updateClustering
+  updateClustering,
+  initEditor
 } from 'state/actions/editor';
+
+import {
+  getDomainsFromData,
+  scaleLinear,
+  getBoardSize
+} from 'services/util';
 
 class Editor extends Component {
   constructor(props) {
@@ -29,7 +36,17 @@ class Editor extends Component {
   }
 
   componentDidMount() {
-    // this.props.dispatch()
+    const {xDomain, yDomain} = getDomainsFromData(this.props.dataset);
+    let {width, height} = getBoardSize(xDomain, yDomain);
+    width += 60;
+    height += 60;
+    this.props.dispatch(initEditor(
+      this.props.dataset,
+      scaleLinear(xDomain, [30, width - 30]),
+      scaleLinear(yDomain.reverse(), [30, height - 30]),
+      width,
+      height
+    ));
   }
 
   onSelect(selection) {
@@ -49,32 +66,36 @@ class Editor extends Component {
         <Header>
           <EditorMenu />
         </Header>
-        <div className={'Editor__CartesianSystem grid'}>
-          <CartesianSystem {...this.props} selected={this.state.selection}/>
+        <div className="row">
+          <div className={'Editor__CartesianSystem'}>
+            <CartesianSystem {...this.props} selected={this.state.selection}/>
+          </div>
         </div>
-        <div className="grid">
-          <ButtonToolbar>
-            <DropdownButton bsStyle={'danger'} title={'Clustering'} id={'clusteringTypes'}>
-              <MenuItem
-                eventKey="1"
+        <div className="row">
+            <ButtonGroup>
+              <Button
+                bsStyle="info"
                 onClick={() => this.handleClustering(singleLinkage)}>
-                {'Single Linkage'}
-              </MenuItem>
-              <MenuItem
-                eventKey="1"
+                Single Linkage
+              </Button>
+              <Button
+                bsStyle="info"
                 onClick={() => this.handleClustering(completeLinkage)}>
-                {'Complete Linkage'}
-              </MenuItem>
-              <MenuItem
-                eventKey="1"
+                Complete Linkage
+              </Button>
+              <Button
+                bsStyle="info"
                 onClick={() => this.handleClustering(averageLinkage)}>
-                {'Average Linkage'}
-              </MenuItem>
-            </DropdownButton>
-          </ButtonToolbar>
+                Average Linkage
+              </Button>
+            </ButtonGroup>
         </div>
         <div className={'grid'}>
-          <Dendrogram onSelect={(data) => this.onSelect(data)}/>
+          {
+            this.props.isDendrogramVisible && (
+              <Dendrogram onSelect={(data) => this.onSelect(data)}/>
+            )
+          }
         </div>
       </div>
     );
@@ -83,7 +104,8 @@ class Editor extends Component {
 
 Editor.propTypes = {
   dataset: PropTypes.array.isRequired,
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  isDendrogramVisible: PropTypes.bool
 };
 
 export default Editor;
