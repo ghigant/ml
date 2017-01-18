@@ -15,24 +15,11 @@ import {addDataset, removeDataset} from 'state/actions/dashboard';
 let Dashboard = ({dispatch, router, datasets}) => {
   const onImport = (file) => {
     read(file, (dataset) => {
-      // const {xDomain, yDomain} = getDomainsFromData(dataset);
-      // const {width, height} = getBoardSize(xDomain, yDomain);
-
       if (size(dataset)) {
         const action = addDataset(dataset);
         dispatch(action);
         router.push(`/editor/${action.id}`);
       }
-
-
-      // dispatch(initEditor(
-      //   dataset,
-      //   scaleLinear(xDomain, [30, width - 30]),
-      //   scaleLinear(yDomain.reverse(), [30, height - 30]),
-      //   width,
-      //   height
-      // ));
-      // router.push('/editor');
     });
   }
 
@@ -46,7 +33,6 @@ let Dashboard = ({dispatch, router, datasets}) => {
         <Navigation onImport={onImport} />
       </Header>
       <div style={{paddingTop: "50px"}}>
-        <h1>Dashboard</h1>
         <div className={'row'}>
         {
           datasets.map((dataset, index) => (
@@ -56,8 +42,7 @@ let Dashboard = ({dispatch, router, datasets}) => {
             >
               <div className={'thumbnail'}>
                 <Link
-                  to={`/editor/${dataset.id}`}
-                  onClick={() => console.log('onClick')}>
+                  to={`/editor/${dataset.id}`}>
                   <svg
                     className="placeholder"
                     width={170}
