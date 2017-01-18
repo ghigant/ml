@@ -1,7 +1,7 @@
 import Editor from './Editor';
 
 import {connect} from 'react-redux';
-import {find, range, size, sortBy} from 'lodash';
+import {find} from 'lodash';
 
 import {
   getDomainsFromData,
@@ -9,7 +9,7 @@ import {
   getBoardSize
 } from 'services/util';
 
-import {euclidianDistance} from 'services/clustering/bottom-up';
+// import {euclidianDistance} from 'services/clustering/bottom-up';
 
 const mapToStateToProps = (state, props) => {
 
@@ -27,19 +27,6 @@ const mapToStateToProps = (state, props) => {
   height += 60;
 
   let data = dataset ? dataset.data : state.editor.dataset;
-
-  // console.log(data);
-  if (size(data) > 1 && false) {
-    const allDistances = range(1, data.length).map((index) => {
-      // console.log(data[index - 1], data[index]);
-      return euclidianDistance(data[index - 1], data[index]);
-    });
-
-    data = sortBy(data, (item, index) => {
-      return index;
-    });
-    console.log(allDistances);
-  }
 
   return {
     dataset: data,
